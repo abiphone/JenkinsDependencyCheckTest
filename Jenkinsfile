@@ -1,22 +1,19 @@
 pipeline {
-	agent any
+	agent {
+		docker {
+			image 'composer:latest'
+		}
+	}
 	stages {
-		stage('Checkout SCM') {
+		stage('Build') {
 			steps {
-				sh 'pwd'
-				git '/home/JenkinsDependencyCheckTest'
+				sh 'composer install'
 			}
 		}
-
-		stage('OWASP DependencyCheck') {
+		stage('Test') {
 			steps {
-				dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
-			}
-		}
-	}	
-	post {
-		success {
-			dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                sh './vendor/bin/phpunit tests'
+            }
 		}
 	}
 }
