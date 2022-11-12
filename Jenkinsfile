@@ -7,7 +7,7 @@ pipeline {
 	stages {
 		stage('Build') {
 			steps {
-				msg ''
+				echo ''
 				//sh 'composer install'
 			}
 		}
